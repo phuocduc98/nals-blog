@@ -1,0 +1,44 @@
+@import '~bootstrap/scss/bootstrap';
+
+.media-list {
+  position: relative;
+  padding: 1rem;
+  margin: 1rem -15px 0;
+  border: solid #f8f9fa;
+  border-width: 0.2rem 0 0;
+
+  ul li {
+    word-break: break-word;
+    cursor: pointer;
+
+    svg {
+      margin: 10px;
+      z-index: 99;
+      visibility: hidden;
+    }
+
+    &:hover {
+      color: #212529;
+      background-color: rgba(0, 0, 0, 0.075);
+
+      svg {
+        visibility: visible !important;
+      }
+    }
+  }
+}
+
+.blog-detail {
+  ul {
+    list-style-type: none;
+  }
+}
+
+@media (min-width: 576px) {
+  .media-list {
+    padding: 1.5rem;
+    margin-right: 0;
+    margin-left: 0;
+    border-width: 0.2rem;
+  }
+}
