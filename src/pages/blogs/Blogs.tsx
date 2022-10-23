@@ -12,6 +12,7 @@ function Blogs() {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortValue, setSortValue] = useState('created_at');
   const [modalShow, setModalShow] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const dispatch = useDispatch();
   const { pending, blogs, pagination } = useSelector(
     (state: RootState) => state.blogs
@@ -19,6 +20,15 @@ function Blogs() {
 
   useEffect(() => {
     fetchBlog(searchTerm, sortValue);
+
+    const updateWindowDimensions = () => {
+      const { innerWidth } = window;
+      setScreenWidth(innerWidth);
+    };
+
+    window.addEventListener("resize", updateWindowDimensions);
+
+    return () => window.removeEventListener("resize", updateWindowDimensions)
   }, [searchTerm, sortValue]);
 
   const handleSearch = (e) => {
@@ -29,7 +39,7 @@ function Blogs() {
   const handleSort = (e) => {
     const { value } = e.target;
     setSortValue(value);
-    fetchBlog(searchTerm, value);
+    // fetchBlog(searchTerm, value);
   };
 
   const fetchBlog = (search, sort_by) => {
@@ -43,8 +53,8 @@ function Blogs() {
 
   return (
     <div>
-      <div className="d-flex justify-content-between">
-        <form className="input-group w-50" onSubmit={handleSearch}>
+      <div className="row col-12">
+        <form className="input-group col-md-6 col-12 my-2" style={{ maxHeight: '38px'}} onSubmit={handleSearch}>
           <input
             type="text"
             className="form-control"
@@ -52,15 +62,19 @@ function Blogs() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <button type="submit" className="btn btn-primary">
-            Search
-          </button>
+          <div className="input-group-append">
+            <button type="submit" className="btn btn-outline-secondary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+              </svg>
+            </button>
+          </div>
         </form>
 
-        <div className="d-flex align-items-center col-4 mr-2">
-          <span>Sort by: </span>
+        <div className="d-flex align-items-center col-md-4 col-12">
+          <span className="text-nowrap mr-2">Sort by: </span>
           <select
-            className="form-control col-6 ml-2"
+            className="form-control"
             value={sortValue}
             onChange={handleSort}
           >
@@ -73,11 +87,15 @@ function Blogs() {
         </div>
 
         <button
-          className="btn btn-primary flex-end"
+          className="btn btn-primary btn-add my-2"
           type="button"
           onClick={() => setModalShow(true)}
         >
-          Create Blog
+          {screenWidth <= 767 ? (
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" className="bi bi-plus" viewBox="0 0 16 16">
+              <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+            </svg>
+          ) : 'Create Blog'}
         </button>
         <BlogFormModal
           show={modalShow}

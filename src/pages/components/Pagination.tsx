@@ -53,8 +53,8 @@ const Pagination = () => {
 
   return (
     <div>
-      <nav className="mt-3" aria-label="Page navigation example">
-        <ul className="pagination justify-content-center">
+      <nav className="overflow-auto mt-3" aria-label="Page navigation example">
+        <ul className="pagination pagination-sm justify-content-center">
           <li
             className={`page-item ${prev && prev !== null ? '' : 'disabled'}`}
           >
